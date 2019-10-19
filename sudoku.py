@@ -25,7 +25,7 @@ def resoudre(grille, level = 0):
     subgrid_y = [[0,1,2]]*3+[[3,4,5]]*3+[[6,7,8]]*3
     grille_possible = copy.copy(grille)
     nombres = {1,2,3,4,5,6,7,8,9}
-    min_len = 6
+    min_len = 9
     try:
         list(np.unique(grille)).index(0)
     except:
