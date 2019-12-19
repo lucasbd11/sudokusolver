@@ -5,19 +5,40 @@ import time
 t1 = time.time()
 
 
-grille = np.array([[1,0,0,0,0,7,0,9,0],
-                    [0,3,0,0,2,0,0,0,8],
-                    [0,0,9,6,0,0,5,0,0],
-                    [0,0,5,3,0,0,9,0,0],
-                    [0,1,0,0,8,0,0,0,2],
-                    [6,0,0,0,0,4,0,0,0],
-                    [3,0,0,0,0,0,0,1,0],
-                    [0,4,0,0,0,0,0,0,7],
-                    [0,0,7,0,0,0,3,0,0]],
+grille = np.array([ [0,0,0,0,6,0,0,0,0],
+                    [1,0,6,0,0,0,0,2,0],
+                    [7,0,2,8,0,5,0,0,3],
+                    [2,1,5,6,0,0,0,0,0],
+                    [0,3,0,0,0,0,0,4,1],
+                    [0,0,0,0,0,9,5,3,2],
+                    [8,0,0,9,0,1,4,0,7],
+                    [0,7,0,0,0,0,1,0,6],
+                    [0,0,1,0,7,0,0,0,0]],
                     dtype = object)
 
 
 
+def get_subgrid(grille,x,y):
+    sub_grid = np.array([[1,1,1,2,2,2,3,3,3],
+                         [1,1,1,1,2,2,2,3,3],
+                         [1,4,1,2,2,2,3,3,3],
+                         [4,4,4,5,5,5,6,3,6],
+                         [4,4,4,5,5,5,6,6,6],
+                         [4,7,4,5,5,5,6,6,6],
+                         [7,7,7,8,8,8,9,6,9],
+                         [7,7,8,8,8,9,9,9,9],
+                         [7,7,7,8,8,8,9,9,9]],
+                         dtype = int)
+    
+    grid_type = sub_grid[y,x]
+    unique_numbers = []
+    
+    for x_index in range(grille.shape[1]):
+        for y_index in range(grille.shape[0]):
+            if sub_grid[y_index,x_index] == grid_type:
+                if not(grille[y_index,x_index] in unique_numbers):
+                    unique_numbers += [grille[y_index,x_index]]
+    return unique_numbers
 
 
 def resoudre(grille, level = 0):
@@ -35,7 +56,8 @@ def resoudre(grille, level = 0):
             if grille[y,x] == 0:
                 unique_x = list(np.unique(grille[:,x]))
                 unique_y = list(np.unique(grille[y,:]))
-                unique_subgrid = list(np.unique(grille[min(subgrid_y[y]):max(subgrid_y[y])+1,min(subgrid_x[x]):max(subgrid_x[x])+1]))
+                #unique_subgrid = list(np.unique(grille[min(subgrid_y[y]):max(subgrid_y[y])+1,min(subgrid_x[x]):max(subgrid_x[x])+1]))
+                unique_subgrid = get_subgrid(grille,x,y)
                 list_possible = list(nombres-set(unique_x+unique_y+unique_subgrid))
                 grille_possible[y,x] = list_possible 
             if type(grille_possible[y,x]) == list:
